@@ -1,0 +1,5 @@
+torch
+torchvision
+torchaudio
+google-genai
+transformers==4.48.2
