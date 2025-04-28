@@ -2,3 +2,6 @@ __pycache__
 prompt.py
 tools.py
 credentials.py
+data
+output
+geminiAPI.py

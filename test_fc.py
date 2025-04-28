@@ -13,21 +13,28 @@ import json
 import requests
 from geminiAPI import evaluate_query, evaluate_response
 
-def read_json(path) -> list:
+def read_jsonl(path) -> list:
     datas = []
     with open(path, 'r', encoding='utf-8') as f:
         lines = f.readlines()
         for line in lines:
             data = json.loads(line)
             datas.append(data)
-    return data
-def read_excel(path):
+    return datas
+
+def read_json(path) -> list:
+    datas = []
+    with open(path, 'r', encoding='utf-8') as f:
+        datas = json.load(f)
+    return datas
+def read_excel(path, sheet_name = None):
     
     # path = 'LLaMA-Factory/QCdata/TestReport_VinMotion_Action_Phase3_28032025 1.xlsx'
     #create empty dataframe
     df = pd.DataFrame()
     num_sheets = pd.ExcelFile(path).sheet_names[1:]
     for id in num_sheets:
+        if sheet_name is not None and id != sheet_name: continue
         sheet = pd.read_excel(path, sheet_name=id, index_col=0, header=0)
         df = pd.concat([df, sheet])
 
@@ -44,7 +51,7 @@ def read_excel(path):
         'custom_nlp_expected_intent': 'function'
     })
     #shuffle df
-    df = df.sample(frac=1).reset_index(drop=True)
+    # df = df.sample(frac=1).reset_index(drop=True)
     return df
 
 def get_answer(function: str = None, query = None): #get_answer by function and query 
